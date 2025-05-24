@@ -3,23 +3,23 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto21
+      java: corretto17              # Matches platform version
     commands:
-      - echo Installing Maven…
-      - yum install -y maven
+      - echo "Installing Maven …"
+      - yum -y install maven
 
   build:
     commands:
-      - echo Building application…
+      - echo "Building application …"
       - mvn clean package -DskipTests
 
   post_build:
     commands:
-      - echo Preparing Elastic Beanstalk artifact…
-      - mkdir eb-deploy
+      - echo "Packaging Elastic Beanstalk artefact …"
+      - mkdir   eb-deploy
       - cp target/*.jar eb-deploy/application.jar
       - cp -R .ebextensions eb-deploy/
-      - cd eb-deploy
+      - cd  eb-deploy
       - zip -r ../application.zip .
 
 artifacts:
