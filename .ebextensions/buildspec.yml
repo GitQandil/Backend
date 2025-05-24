@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - echo Installing Maven…
+      - yum install -y maven
+
+  build:
+    commands:
+      - echo Building application…
+      - mvn clean package -DskipTests
+
+  post_build:
+    commands:
+      - echo Preparing Elastic Beanstalk artifact…
+      - mkdir eb-deploy
+      - cp target/*.jar eb-deploy/application.jar
+      - cp -R .ebextensions eb-deploy/
+      - cd eb-deploy
+      - zip -r ../application.zip .
+
+artifacts:
+  files:
+    - application.zip
