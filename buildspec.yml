@@ -27,7 +27,7 @@ phases:
       - echo "Packaging Elastic Beanstalk artifact..."
       - mkdir -p eb-deploy
       - cp target/*.jar eb-deploy/application.jar
-      - cp -R ebextensions eb-deploy/
+      - cp -R .ebextensions eb-deploy/
       - cd eb-deploy
       - zip -r ../application.zip .
 
