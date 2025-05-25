@@ -35,9 +35,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Application ###
-application-prod.properties
-application-dev.properties
 *.log
 
 .env
