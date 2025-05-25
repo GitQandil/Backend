@@ -20,7 +20,7 @@ phases:
       - echo "Verifying JAR file..."
       - ls -l target/*.jar
       - echo "Verifying ebextensions directory..."
-      - ls -la ebextensions/
+      - ls -la .ebextensions/
 
   post_build:
     commands:
