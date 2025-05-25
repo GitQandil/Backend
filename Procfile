@@ -1,0 +1,1 @@
+web: java -Xms256m -Xmx512m -Dspring.profiles.active=prod -jar application.jar
