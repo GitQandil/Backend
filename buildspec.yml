@@ -15,23 +15,21 @@ phases:
 
   build:
     commands:
-      - echo "Building application..."
+      - echo "Building application JAR..."
       - mvn clean package -DskipTests
-      - echo "Verifying JAR file..."
+      - echo "Ensuring target JAR exists:"
       - ls -l target/*.jar
-      - echo "Verifying ebextensions directory..."
-      - ls -la .ebextensions/
 
   post_build:
     commands:
-      - echo "Packaging Elastic Beanstalk artifact..."
-      - mkdir -p eb-deploy
+      - echo "Staging Elastic Beanstalk artifact structure..."
+      - rm -rf eb-deploy && mkdir eb-deploy
       - cp target/*.jar eb-deploy/application.jar
       - cp -R .ebextensions eb-deploy/
-      - cd eb-deploy
-      - zip -r ../application.zip .
+      - cp Procfile eb-deploy/Procfile
+      - echo "Artifact staging complete."
 
 artifacts:
   files:
-    - application.zip
-  discard-paths: yes
+    - eb-deploy/**/*
+  discard-paths: no
