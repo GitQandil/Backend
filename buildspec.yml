@@ -19,15 +19,13 @@ phases:
       - ls -l target/*.jar
   post_build:
     commands:
-      - echo ">> Staging EB artifact structure"
-      - rm -rf eb-deploy && mkdir eb-deploy
-      - cp target/*.jar eb-deploy/application.jar
-      - cp Procfile eb-deploy/Procfile
-      - cp -R .ebextensions eb-deploy/.ebextensions
-      - cd eb-deploy
-      - echo ">> Zipping bundle into application.zip"
-      - zip -r ../application.zip .
+      - echo ">> Preparing files for deployment"
+      # Rename the JAR to application.jar
+      - cp target/*.jar application.jar
+      # Verify all required files exist
+      - ls -l application.jar Procfile .ebextensions
 artifacts:
   files:
-    - application.zip
-  discard-paths: yes
+    - application.jar
+    - Procfile
+    - .ebextensions/**/*
