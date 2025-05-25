@@ -5,31 +5,29 @@ phases:
     runtime-versions:
       java: corretto21
     commands:
-      - echo "Using pre-installed Maven"
-
+      - echo ">> Using Corretto 21 and pre-installed Maven"
   pre_build:
     commands:
-      - echo "Setting environment variables..."
+      - echo ">> Setting environment variables"
       - export SERVER_PORT=8080
       - export SPRING_PROFILES_ACTIVE=prod
-
   build:
     commands:
-      - echo "Building application JAR..."
+      - echo ">> Building JAR with Maven"
       - mvn clean package -DskipTests
-      - echo "Ensuring target JAR exists:"
+      - echo ">> Verifying target JAR exists"
       - ls -l target/*.jar
-
   post_build:
     commands:
-      - echo "Staging Elastic Beanstalk artifact structure..."
+      - echo ">> Staging EB artifact structure"
       - rm -rf eb-deploy && mkdir eb-deploy
       - cp target/*.jar eb-deploy/application.jar
-      - cp -R .ebextensions eb-deploy/
       - cp Procfile eb-deploy/Procfile
-      - echo "Artifact staging complete."
-
+      - cp -R .ebextensions eb-deploy/.ebextensions
+      - cd eb-deploy
+      - echo ">> Zipping bundle into application.zip"
+      - zip -r ../application.zip .
 artifacts:
   files:
-    - eb-deploy/**/*
-  discard-paths: no
+    - application.zip
+  discard-paths: yes
